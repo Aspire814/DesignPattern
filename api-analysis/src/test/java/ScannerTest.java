@@ -1,6 +1,6 @@
 import com.storm.common.aspect.SimpleAspect;
 import com.storm.common.util.BeanFactory;
-import com.storm.service.impl.SingleDemoSrv;
+import com.storm.service.IMetricsSrv;
 import org.junit.Test;
 
 public class ScannerTest {
@@ -8,9 +8,9 @@ public class ScannerTest {
     public void test1(){
         try {
             BeanFactory.init("com.storm.service.impl", SimpleAspect.class);
-            SingleDemoSrv singleDemoSrv = BeanFactory.getBean("singleDemoSrv", SingleDemoSrv.class);
-            singleDemoSrv.doSomething();
-
+            IMetricsSrv metricsSrv = BeanFactory.getBean("metricsSrv",IMetricsSrv.class);
+            metricsSrv.recordTimestamp("/test",1000);
+            metricsSrv.recordResponseTime("/test",999);
         } catch (Exception e) {
             e.printStackTrace();
         }

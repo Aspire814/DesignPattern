@@ -7,7 +7,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)//注解不仅被保存到class文件中，jvm加载class文件之后，仍然存在
 @Documented
 public @interface CustomAspectAnnotation {
-    String before() default "";
 
-    String after() default "";
 }
