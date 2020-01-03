@@ -1,5 +1,6 @@
 package com.storm.service.impl;
 
+import com.storm.common.annotation.Service;
 import com.storm.service.IMetricsSrv;
 
 import java.util.HashMap;
