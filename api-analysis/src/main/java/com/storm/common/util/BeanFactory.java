@@ -3,7 +3,9 @@ package com.storm.common.util;
 import com.storm.common.annotation.ApiMonitor;
 import com.storm.common.annotation.Service;
 import com.storm.common.aspect.ApiMonitorAspect;
+import com.storm.common.aspect.Aspect;
 import com.storm.common.interceptor.SimpleAspectCglibInterceptor;
+import com.storm.common.interceptor.SimpleAspectJDKInterceptor;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.FieldAnnotationsScanner;
@@ -11,9 +13,12 @@ import org.reflections.scanners.MethodAnnotationsScanner;
 
 import java.lang.annotation.ElementType;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import javassist.util.proxy.ProxyFactory;
 
 public class BeanFactory {
 
@@ -56,11 +61,21 @@ public class BeanFactory {
             //在初始化的bean中获取注解修饰的方法所属类对象作为目标代理对象
             Object target = beanContainer.get(beanName);
             Object proxy = target;
+            Aspect aspect = null;
+
             if (currentAspectType == null || currentAspectType == ApiMonitorAspect.class) {
-                SimpleAspectCglibInterceptor interceptor = new SimpleAspectCglibInterceptor(target, declaringClass, new ApiMonitorAspect());
-                proxy = interceptor.getProxy();
+                aspect = new ApiMonitorAspect();
             } else {
                 //其他切面代理实现
+            }
+            try {
+                //默认使用cglib代理
+                SimpleAspectCglibInterceptor interceptor = new SimpleAspectCglibInterceptor(target, declaringClass, aspect);
+                proxy = interceptor.getProxy();
+            } catch (NoClassDefFoundError e) {
+                //没有依赖cglib时使用jdk动态代理
+                SimpleAspectJDKInterceptor interceptor = new SimpleAspectJDKInterceptor(target, aspect, declaringClass);
+                proxy = Proxy.newProxyInstance(declaringClass.getClassLoader(), declaringClass.getInterfaces(), new SimpleAspectJDKInterceptor(target, aspect, declaringClass));
             }
             beanContainer.put(beanName, proxy);
         }
