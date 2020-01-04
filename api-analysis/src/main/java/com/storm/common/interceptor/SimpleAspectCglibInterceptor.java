@@ -28,9 +28,9 @@ public class SimpleAspectCglibInterceptor implements MethodInterceptor {
 
     @Override
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-        aspect.before();
+        aspect.before(o,method,objects);
         Object ret = method.invoke(target, objects);
-        aspect.after();
+        aspect.after(o,method,objects);
         return ret;
     }
 }

@@ -1,9 +1,10 @@
 package com.storm.common.util;
 
+import com.storm.common.annotation.ApiMonitor;
 import com.storm.common.annotation.Service;
-import com.storm.common.annotation.CustomAspectAnnotation;
-import com.storm.common.aspect.SimpleAspect;
+import com.storm.common.aspect.ApiMonitorAspect;
 import com.storm.common.interceptor.SimpleAspectCglibInterceptor;
+
 import org.reflections.Reflections;
 import org.reflections.scanners.FieldAnnotationsScanner;
 import org.reflections.scanners.MethodAnnotationsScanner;
@@ -33,7 +34,7 @@ public class BeanFactory {
         initBean(typesAnnotatedSet);
 
         Set<Method> methodsAnnotatedSet = new Reflections(packageName, new MethodAnnotationsScanner(), new FieldAnnotationsScanner())
-                .getMethodsAnnotatedWith(CustomAspectAnnotation.class);
+                .getMethodsAnnotatedWith(ApiMonitor.class);
         initProxy(methodsAnnotatedSet);
     }
 
@@ -56,8 +57,8 @@ public class BeanFactory {
             //在初始化的bean中获取注解修饰的方法所属类对象作为目标代理对象
             Object target = beanContainer.get(beanName);
             Object proxy = target;
-            if (currentAspectType == null || currentAspectType == SimpleAspect.class) {
-                SimpleAspectCglibInterceptor interceptor = new SimpleAspectCglibInterceptor(target, declaringClass,new SimpleAspect());
+            if (currentAspectType == null || currentAspectType == ApiMonitorAspect.class) {
+                SimpleAspectCglibInterceptor interceptor = new SimpleAspectCglibInterceptor(target, declaringClass, new ApiMonitorAspect());
                 proxy = interceptor.getProxy();
             } else {
                 //其他认切面代理实现

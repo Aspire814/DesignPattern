@@ -1,15 +1,20 @@
 package com.storm.service.impl;
 
+import com.storm.common.annotation.ApiMonitor;
 import com.storm.common.annotation.Service;
-import com.storm.common.annotation.CustomAspectAnnotation;
 import com.storm.service.ISingleDemoSrv;
 
 @Service("singleDemoSrv")
 public class SingleDemoSrv implements ISingleDemoSrv {
 
     @Override
-    @CustomAspectAnnotation
+    @ApiMonitor
     public void doSomething() {
-        System.out.println("doing something");
+        try {
+            System.out.println("doSomething执行中。。。");
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
