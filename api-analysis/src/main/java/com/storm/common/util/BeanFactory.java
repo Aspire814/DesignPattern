@@ -9,6 +9,7 @@ import org.reflections.Reflections;
 import org.reflections.scanners.FieldAnnotationsScanner;
 import org.reflections.scanners.MethodAnnotationsScanner;
 
+import java.lang.annotation.ElementType;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,11 +31,9 @@ public class BeanFactory {
      */
     public static void init(String packageName, Class aspectType) throws Exception {
         currentAspectType = aspectType;
-        Set<Class<?>> typesAnnotatedSet = new Reflections(packageName).getTypesAnnotatedWith(Service.class);
+        Set<Class<?>> typesAnnotatedSet = (Set<Class<?>>) BeanUtils.scanAnnotationByPackageName(packageName, ElementType.TYPE);
         initBean(typesAnnotatedSet);
-
-        Set<Method> methodsAnnotatedSet = new Reflections(packageName, new MethodAnnotationsScanner(), new FieldAnnotationsScanner())
-                .getMethodsAnnotatedWith(ApiMonitor.class);
+        Set<Method> methodsAnnotatedSet = (Set<Method>) BeanUtils.scanAnnotationByPackageName(packageName, ElementType.METHOD);
         initProxy(methodsAnnotatedSet);
     }
 
@@ -61,7 +60,7 @@ public class BeanFactory {
                 SimpleAspectCglibInterceptor interceptor = new SimpleAspectCglibInterceptor(target, declaringClass, new ApiMonitorAspect());
                 proxy = interceptor.getProxy();
             } else {
-                //其他认切面代理实现
+                //其他切面代理实现
             }
             beanContainer.put(beanName, proxy);
         }
