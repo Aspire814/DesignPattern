@@ -1,4 +1,4 @@
-package com.storm.common.aspect;
+package com.storm.common.annotation;
 
 import java.lang.annotation.*;
 

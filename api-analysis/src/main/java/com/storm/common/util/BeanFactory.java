@@ -1,10 +1,9 @@
 package com.storm.common.util;
 
 import com.storm.common.annotation.Service;
-import com.storm.common.aspect.CustomAspectAnnotation;
+import com.storm.common.annotation.CustomAspectAnnotation;
 import com.storm.common.aspect.SimpleAspect;
 import com.storm.common.interceptor.SimpleAspectCglibInterceptor;
-import com.storm.common.interceptor.SimpleCglibInterceptor;
 import org.reflections.Reflections;
 import org.reflections.scanners.FieldAnnotationsScanner;
 import org.reflections.scanners.MethodAnnotationsScanner;
@@ -61,9 +60,7 @@ public class BeanFactory {
                 SimpleAspectCglibInterceptor interceptor = new SimpleAspectCglibInterceptor(target, declaringClass,new SimpleAspect());
                 proxy = interceptor.getProxy();
             } else {
-                //默认切面代理实现
-                SimpleCglibInterceptor interceptor = new SimpleCglibInterceptor(target, declaringClass);
-                proxy = interceptor.getProxy();
+                //其他认切面代理实现
             }
             beanContainer.put(beanName, proxy);
         }

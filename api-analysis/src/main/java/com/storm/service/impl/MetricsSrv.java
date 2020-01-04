@@ -1,7 +1,7 @@
 package com.storm.service.impl;
 
 import com.storm.common.annotation.Service;
-import com.storm.common.aspect.CustomAspectAnnotation;
+import com.storm.common.annotation.CustomAspectAnnotation;
 import com.storm.service.IMetricsSrv;
 
 import java.util.HashMap;
