@@ -14,7 +14,7 @@ public class SingleService implements ISingleService {
     @Transactional
     public void doSomething() {
         //使用事务管理器来开启统一事务，不要用spring来注入mapper
-        StormTestMapper mapper = (StormTestMapper) TransactionManager.getMpper(StormTestMapper.class);
+        StormTestMapper mapper = (StormTestMapper) TransactionManager.getMpper(SingleService.class, StormTestMapper.class);
         //模拟转账操作
         StormTest m1 = mapper.selectByPrimaryKey(1);
         StormTest m2 = mapper.selectByPrimaryKey(2);
@@ -22,7 +22,7 @@ public class SingleService implements ISingleService {
         m2.setValue(m2.getValue() + 100);
         mapper.updateByPrimaryKey(m1);
         int zero = 0;
-        setError(zero);
+        //setError(zero);
         mapper.updateByPrimaryKey(m2);
     }
 

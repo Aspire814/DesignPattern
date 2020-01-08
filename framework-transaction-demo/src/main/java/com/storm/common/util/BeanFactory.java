@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.storm.common.annotation.Component;
@@ -16,7 +17,7 @@ import com.storm.common.interceptor.SimpleAspectCglibInterceptor;
 import com.storm.common.interceptor.SimpleAspectJDKInterceptor;
 
 
-public class BeanFactory{
+public class BeanFactory {
     /**
      * Bean对象容器
      */
@@ -25,6 +26,8 @@ public class BeanFactory{
     private static Class currentAspectType = null;
 
     private static SqlSessionFactory sqlSessionFactory;
+
+    private static TransactionManager transactionManager = new TransactionManager();
 
     /**
      * 初始化指定包下的所有@Service注解标记的类
@@ -63,7 +66,9 @@ public class BeanFactory{
             Aspect aspect = null;
 
             if (currentAspectType == null || currentAspectType == RepositoryAspect.class) {
-                aspect = new RepositoryAspect(sqlSessionFactory.openSession(false));
+                SqlSession sqlSession = sqlSessionFactory.openSession(false);
+                aspect = new RepositoryAspect(sqlSession);
+                transactionManager.getSessionMap().put(declaringClass.getName(), sqlSession);
             } else {
                 //其他切面代理实现
             }
