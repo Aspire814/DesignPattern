@@ -34,7 +34,7 @@ public class ApiMonitorAspect implements Aspect {
 
     public void startRepeatedReport(long period, TimeUnit unit) {
         executor.scheduleAtFixedRate(() -> {
-            // TODO 这里是统计相关逻辑
+            // 这里是统计相关逻辑
             Map<String, Map<String, Double>> stats = new HashMap<>();
             for (Map.Entry<String, List<Long>> entry : responseTimes.entrySet()) {
                 String apiName = entry.getKey();
@@ -83,5 +83,10 @@ public class ApiMonitorAspect implements Aspect {
     public void after(Object target, Method method, Object[] args) {
         long responseTime = System.currentTimeMillis() - startTime;
         recordResponseTime(method.getName(), responseTime);
+    }
+
+    @Override
+    public void afterException(Object target, Method method, Object[] args) {
+
     }
 }

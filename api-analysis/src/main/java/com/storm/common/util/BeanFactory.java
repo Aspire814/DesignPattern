@@ -1,16 +1,10 @@
 package com.storm.common.util;
 
-import com.storm.common.annotation.ApiMonitor;
 import com.storm.common.annotation.Service;
 import com.storm.common.aspect.ApiMonitorAspect;
 import com.storm.common.aspect.Aspect;
 import com.storm.common.interceptor.SimpleAspectCglibInterceptor;
 import com.storm.common.interceptor.SimpleAspectJDKInterceptor;
-
-import org.reflections.Reflections;
-import org.reflections.scanners.FieldAnnotationsScanner;
-import org.reflections.scanners.MethodAnnotationsScanner;
-
 import java.lang.annotation.ElementType;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -18,7 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javassist.util.proxy.ProxyFactory;
 
 public class BeanFactory {
 
@@ -48,6 +41,7 @@ public class BeanFactory {
             Service annotation = c.getAnnotation(Service.class);
             //注解可能没有设置value 抛出异常
             if (annotation.value().equals("")) {
+                //取类名首字母小写 部分配置 部分不配置 可能出现冲突 这里先简单处理
                 throw new Error("被Service注解修饰的服务，需配置名称 Class: " + c.getName());
             }
             beanContainer.put(annotation.value(), bean);
