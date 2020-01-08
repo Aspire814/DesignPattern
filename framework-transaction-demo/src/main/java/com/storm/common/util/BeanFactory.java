@@ -8,10 +8,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 import com.storm.common.annotation.Component;
 import com.storm.common.aspect.Aspect;
@@ -53,8 +49,6 @@ public class BeanFactory{
                 //取类名首字母小写 部分配置 部分不配置 可能出现冲突 这里先简单处理
                 throw new Error("被Component注解修饰的服务，需配置名称 Class: " + c.getName());
             }
-
-            bean = SpringUtil.getBean(annotation.value());
             beanContainer.put(annotation.value(), bean);
         }
     }
