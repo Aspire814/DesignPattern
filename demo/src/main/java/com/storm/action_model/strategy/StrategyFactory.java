@@ -1,4 +1,4 @@
-package com.storm.strategy;
+package com.storm.action_model.strategy;
 
 public class StrategyFactory {
 	private IStrategySrv strategySrv;

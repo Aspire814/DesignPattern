@@ -1,6 +1,7 @@
-package com.storm.decorator;
+package com.storm.struct_model.decorator;
 
-public class AnotherDecorator extends DecoratorBase {
+public class Decorator extends DecoratorBase {
+
 	private DecoratorBase decoratorBase;
 
 	@Override
@@ -10,7 +11,8 @@ public class AnotherDecorator extends DecoratorBase {
 	}
 
 	public void fun2() {
-		System.out.println("anotherDecorator.fun2");
+		System.out.println("decorator.fun2");
+
 	}
 
 	public DecoratorBase getDecoratorBase() {
@@ -21,13 +23,13 @@ public class AnotherDecorator extends DecoratorBase {
 		this.decoratorBase = decoratorBase;
 	}
 
-	public AnotherDecorator(DecoratorBase decoratorBase) {
+	public Decorator() {
 		super();
-		this.decoratorBase = decoratorBase;
 	}
 
-	public AnotherDecorator() {
+	public Decorator(DecoratorBase decoratorBase) {
 		super();
+		this.decoratorBase = decoratorBase;
 	}
 
 }

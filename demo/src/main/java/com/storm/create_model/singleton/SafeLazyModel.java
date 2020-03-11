@@ -1,4 +1,4 @@
-package com.storm.Singleton;
+package com.storm.create_model.singleton;
 
 /**
  * 懒汉单例模式双重保证线程安全  或者直接粗暴加synchronized到方法上也可

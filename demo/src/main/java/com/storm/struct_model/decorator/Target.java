@@ -1,4 +1,4 @@
-package com.storm.decorator;
+package com.storm.struct_model.decorator;
 
 public class Target extends DecoratorBase {
 
